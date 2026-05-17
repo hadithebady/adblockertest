@@ -1,0 +1,242 @@
+# Ad Blocker Stress Test Website
+
+Save this as `index.html` and open it in a browser.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ad Blocker Stress Test</title>
+
+  <!-- Fake tracker scripts -->
+  <script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script src="https://connect.facebook.net/en_US/fbevents.js"></script>
+  <script src="https://www.googletagmanager.com/gtag/js?id=TEST"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #0f0f0f;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    header {
+      padding: 25px;
+      text-align: center;
+      background: linear-gradient(90deg, #ff0055, #ff8800);
+      font-size: 2rem;
+      font-weight: bold;
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+    }
+
+    #controls {
+      text-align: center;
+      padding: 20px;
+    }
+
+    button {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      background: #00ff88;
+      color: black;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    #ads {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .ad-box {
+      background: white;
+      color: black;
+      border-radius: 15px;
+      overflow: hidden;
+      animation: pop 0.3s ease;
+      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+      border: 3px solid #ff0055;
+    }
+
+    .ad-header {
+      background: #ff0055;
+      color: white;
+      padding: 10px;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    .ad-content {
+      padding: 15px;
+    }
+
+    .ad-content img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .ad-title {
+      margin-top: 10px;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .ad-desc {
+      margin-top: 8px;
+      color: #444;
+      font-size: 0.95rem;
+    }
+
+    .buy-btn {
+      margin-top: 12px;
+      width: 100%;
+      background: #00cc66;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .tracker {
+      display: none;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100px;
+      border: none;
+      margin-top: 10px;
+    }
+
+    @keyframes pop {
+      from {
+        transform: scale(0.7);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  AD BLOCKER STRESS TEST
+</header>
+
+<div id="controls">
+  <button onclick="startAds()">SPAWN REALISTIC ADS</button>
+</div>
+
+<div id="ads"></div>
+
+<script>
+  const companies = [
+    'MegaVPN',
+    'CryptoFast',
+    'Ultra Browser',
+    'CloudX Hosting',
+    'FastCoin',
+    'GameBoost',
+    'ByteSecure',
+    'StreamWave',
+    'Nova AI',
+    'Pixel Energy'
+  ];
+
+  const slogans = [
+    'LIMITED OFFER!',
+    'BUY NOW!',
+    'Only today!',
+    'Best deal online!',
+    'Millions already joined!',
+    'Your PC is at risk!',
+    'Click before it ends!',
+    'Recommended for you!'
+  ];
+
+  let interval;
+
+  function randomItem(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  function createAd() {
+    const company = randomItem(companies);
+    const slogan = randomItem(slogans);
+
+    const ad = document.createElement('div');
+    ad.className = 'ad-box';
+
+    ad.innerHTML = `
+      <div class="ad-header">Sponsored Ad</div>
+      <div class="ad-content">
+        <img src="https://picsum.photos/400/200?random=${Math.random()}" />
+        <div class="ad-title">${company}</div>
+        <div class="ad-desc">${slogan} Try ${company} right now and boost your experience.</div>
+        <button class="buy-btn">VISIT SITE</button>
+
+        <!-- Fake trackers -->
+        <img class="tracker" src="https://googleads.g.doubleclick.net/pagead/id" />
+        <img class="tracker" src="https://facebook.com/tr?id=12345" />
+        <iframe src="https://example.com"></iframe>
+      </div>
+    `;
+
+    document.getElementById('ads').prepend(ad);
+
+    if (document.querySelectorAll('.ad-box').length > 150) {
+      document.querySelector('.ad-box:last-child').remove();
+    }
+  }
+
+  function startAds() {
+    clearInterval(interval);
+
+    interval = setInterval(() => {
+      for (let i = 0; i < 5; i++) {
+        createAd();
+      }
+    }, 250);
+  }
+</script>
+
+</body>
+</html>
+```
+
+What this does:
+
+* Creates realistic website-style ad cards.
+* Spawns tons of ads continuously.
+* Includes fake tracker URLs and ad-related domains.
+* Uses iframes and hidden tracking images.
+* Good for testing cosmetic filtering + tracker blocking.
+* Works locally in browser.
+
